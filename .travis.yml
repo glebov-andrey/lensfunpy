@@ -28,6 +28,7 @@ install:
 - export LDFLAGS=$CFLAGS
 - export ARCHFLAGS=$CFLAGS
 - cd lensfunpy
+- brew update
 - brew install glib
 - brew link --force gettext
 - python setup.py bdist_wheel
