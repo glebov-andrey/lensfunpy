@@ -1,0 +1,53 @@
+language:
+- objective-c
+env:
+  #global: LATEST_TAG=1
+  matrix:
+  - VERSION=2.7.8
+  - VERSION=3.3.5
+  - VERSION=3.4.1
+install:
+- source terryfy/travis_tools.sh
+- get_python_environment macpython $VERSION venv
+# Cython doesn't have wheels on PyPI yet
+- pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
+- pip install numpy wheel
+- if [ -n "$LATEST_TAG" ]; then 
+    checkout_closest_tag lensfunpy ;
+  else
+    cd lensfunpy ;
+    git fetch ;
+    git checkout master ;
+    git log -n 1 ;
+    cd .. ;
+  fi
+- export CC=clang
+- export CXX=clang++
+- export CFLAGS="-arch i386 -arch x86_64"
+- export CXXFLAGS=$CFLAGS
+- export LDFLAGS=$CFLAGS
+- export ARCHFLAGS=$CFLAGS
+- cd lensfunpy
+- brew install glib
+- python setup.py bdist_wheel
+- pip install delocate
+- delocate-listdeps dist/*.whl # lists library dependencies
+- delocate-wheel dist/*.whl # copies library dependencies into wheel
+- rename_wheels dist
+- pip install dist/*.whl
+- cd ..
+script:
+- pip install nose
+- mkdir tmp_for_test
+- cd tmp_for_test
+- python setup.py nosetests --verbosity=3 --nocapture ..
+- cd ..
+before_deploy: cd lensfunpy/dist
+deploy:
+  provider: pypi
+  user: neothemachine
+  password:
+    secure: "..."
+  on:
+    tags: true
+    all_branches: true

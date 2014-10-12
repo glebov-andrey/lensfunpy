@@ -1,6 +1,7 @@
 [submodule "lensfunpy"]
 	path = lensfunpy
 	url = git://github.com/neothemachine/lensfunpy.git
+	ignore = dirty
 [submodule "terryfy"]
 	path = terryfy
 	url = git://github.com/MacPython/terryfy.git
