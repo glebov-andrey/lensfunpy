@@ -29,7 +29,7 @@ install:
 - export ARCHFLAGS=$CFLAGS
 - cd lensfunpy
 - brew install glib
-- brew link gettext
+- brew link --force gettext
 - python setup.py bdist_wheel
 - pip install delocate
 - delocate-listdeps dist/*.whl # lists library dependencies
