@@ -39,7 +39,6 @@ install:
 - pip install dist/*.whl
 - cd ..
 script:
-- pip install nose
 - mkdir tmp_for_test
 - cd tmp_for_test
 - python setup.py nosetests --verbosity=3 --nocapture ..
