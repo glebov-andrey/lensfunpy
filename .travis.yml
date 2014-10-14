@@ -41,7 +41,7 @@ install:
 script:
 - mkdir tmp_for_test
 - cd tmp_for_test
-- python setup.py nosetests --verbosity=3 --nocapture ..
+- nosetests --verbosity=3 --nocapture ../lensfunpy/test
 - cd ..
 before_deploy: cd lensfunpy/dist
 
