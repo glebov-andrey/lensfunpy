@@ -1,59 +1,60 @@
-language:
-- objective-c
-env:
-  #global: LATEST_TAG=1
-  matrix:
-  - VERSION=2.7.8
-  - VERSION=3.3.5
-  - VERSION=3.4.1
-install:
-- source terryfy/travis_tools.sh
-- get_python_environment macpython $VERSION venv
-- if [ -n "$LATEST_TAG" ]; then 
-    checkout_closest_tag lensfunpy ;
-  else
-    cd lensfunpy ;
-    git fetch ;
-    git checkout master ;
-    git log -n 1 ;
-    cd .. ;
-  fi
-- cd lensfunpy
-# Cython doesn't have wheels on PyPI yet
-- pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
-- pip install -r dev-requirements.txt
-- brew install --universal glib
-- brew link --force gettext
-- export CC=clang
-- export CXX=clang++
-- export CFLAGS="-arch i386 -arch x86_64"
-- export CXXFLAGS=$CFLAGS
-- export LDFLAGS=$CFLAGS
-- export ARCHFLAGS=$CFLAGS
-- python setup.py bdist_wheel
-- pip install delocate
-- delocate-listdeps --all dist/*.whl # lists library dependencies
-- delocate-wheel --require-archs=intel dist/*.whl # copies library dependencies into wheel
-- delocate-listdeps --all dist/*.whl # verify
-- rename_wheels dist
-- pip install dist/*.whl
-- cd ..
-script:
-# make sure it's working without any required libraries installed
-- brew rm glib
-- brew rm gettext
-- mkdir tmp_for_test
-- cd tmp_for_test
-- nosetests --verbosity=3 --nocapture ../lensfunpy/test
-- cd ..
-before_deploy: cd lensfunpy/dist
+language: objective-c
 
-deploy:
-  provider: pypi
-  user: neothemachine
-  password:
-    secure: "pCn0C1WsU6HoslSXhVZySIzn0f2mfiCWHC7t4tbkhLCrBQuSNNIgSf1lvQdsEAbluqi8IFTmRasfi9cOV/PDO+4W1O8qpPhYVc2INfF4lFs6ef/Ow3kK5+exnjaUMbc0SyAjekQ8f0z0rVKvDANvByAYeeeQbj8pCXBHV9SSs98="
-  on:
-    tags: true
-    all_branches: true
-    condition: $USE_LATEST_LENSFUN = false
+env:
+  global:
+    #- LATEST_TAG=1
+    # PYPI_PASS for deployment
+    - secure: "T1YdcumN8SrCgxOT6XWJ4uDcul4uNszdhZiKkEoslAge5nODTfvhqYs1bMHtFuplBYkhYLS3ZQ3wx+m0C41qp5fG+b8eV2dT+uC26kG2Z4euKztzcJLhEdFXVQAODvHEPlcnESjqG+795iBzOFkL6bWi2XA7EGdNs8XkHvK208Q="
+  matrix:
+    - VERSION=2.7.8
+    - VERSION=3.3.5
+    - VERSION=3.4.1
+  
+install:
+  - source terryfy/travis_tools.sh
+  - get_python_environment macpython $VERSION venv
+  - if [ -n "$LATEST_TAG" ]; then 
+      checkout_closest_tag lensfunpy ;
+    else
+      cd lensfunpy ;
+      git fetch ;
+      git checkout master ;
+      git log -n 1 ;
+      cd .. ;
+    fi
+  - cd lensfunpy
+  # Cython doesn't have wheels on PyPI yet
+  - pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
+  - pip install -r dev-requirements.txt
+  - brew install --universal glib
+  - brew link --force gettext
+  - export CC=clang
+  - export CXX=clang++
+  - export CFLAGS="-arch i386 -arch x86_64"
+  - export CXXFLAGS=$CFLAGS
+  - export LDFLAGS=$CFLAGS
+  - export ARCHFLAGS=$CFLAGS
+  - python setup.py bdist_wheel
+  - pip install delocate
+  - delocate-listdeps --all dist/*.whl # lists library dependencies
+  - delocate-wheel --require-archs=intel dist/*.whl # copies library dependencies into wheel
+  - delocate-listdeps --all dist/*.whl # verify
+  - rename_wheels dist
+  - pip install dist/*.whl
+  - cd ..
+
+script:
+  # make sure it's working without any required libraries installed
+  - brew rm glib
+  - brew rm gettext
+  - mkdir tmp_for_test
+  - cd tmp_for_test
+  - nosetests --verbosity=3 --nocapture ../lensfunpy/test
+  - cd ..
+
+after_success:
+  - cd lensfunpy
+  - "if [[ \"`git log -n 1 --pretty=format:'%d'`\" =~ \"tag: v\" ]]; then
+       pip install twine ;
+       twine upload -u neothemachine -p $PYPI_PASS dist/* ;
+     fi"
