@@ -18,8 +18,7 @@ install:
     else
       cd lensfunpy ;
       git fetch ;
-      git stash ;
-      git checkout master ;
+      git checkout -f master ;
       git log -n 1 ;
       cd .. ;
     fi
