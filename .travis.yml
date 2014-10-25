@@ -55,6 +55,6 @@ script:
 after_success:
   - cd lensfunpy
   - "if [[ \"`git log -n 1 --pretty=format:'%d'`\" =~ \"tag: v\" ]]; then
-       pip install twine ;
+       pip install git+git://github.com/neothemachine/twine.git@issue-50 ;
        twine upload -u neothemachine -p $PYPI_PASS dist/* ;
      fi"
