@@ -15,7 +15,7 @@ matrix:
   
 install:
   - source terryfy/travis_tools.sh
-  - get_python_environment macpython $VERSION venv
+  - travis_retry get_python_environment macpython $VERSION venv
   - if [ -n "$LATEST_TAG" ]; then 
       checkout_closest_tag lensfunpy ;
     else
