@@ -14,7 +14,7 @@ matrix:
   fast_finish: true
 
 install:
-  - cd terryfy && git pull && cd ..
+  - cd terryfy && git fetch && git checkout master && cd ..
   - source terryfy/travis_tools.sh
   - travis_retry get_python_environment macpython $VERSION venv
   - if [ -n "$LATEST_TAG" ]; then 
