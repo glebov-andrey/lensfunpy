@@ -29,7 +29,7 @@ install:
   # Cython doesn't have wheels on PyPI yet
   - travis_retry pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
   - travis_retry pip install -r dev-requirements.txt
-  - brew install --universal glib
+  - travis_retry brew install --universal glib
   - brew link --force gettext
   - export CC=clang
   - export CXX=clang++
