@@ -7,6 +7,7 @@ env:
     - secure: "T1YdcumN8SrCgxOT6XWJ4uDcul4uNszdhZiKkEoslAge5nODTfvhqYs1bMHtFuplBYkhYLS3ZQ3wx+m0C41qp5fG+b8eV2dT+uC26kG2Z4euKztzcJLhEdFXVQAODvHEPlcnESjqG+795iBzOFkL6bWi2XA7EGdNs8XkHvK208Q="
   matrix:
     - VERSION=2.7.8
+    - VERSION=3.3.5
     - VERSION=3.4.1
     - VERSION=3.5.0
     
