@@ -6,14 +6,11 @@ env:
     # PYPI_PASS for deployment
     - secure: "T1YdcumN8SrCgxOT6XWJ4uDcul4uNszdhZiKkEoslAge5nODTfvhqYs1bMHtFuplBYkhYLS3ZQ3wx+m0C41qp5fG+b8eV2dT+uC26kG2Z4euKztzcJLhEdFXVQAODvHEPlcnESjqG+795iBzOFkL6bWi2XA7EGdNs8XkHvK208Q="
   matrix:
-    - VERSION=2.7.8
-    - VERSION=3.3.5
-    - VERSION=3.4.1
-    - VERSION=3.5.0
+    - VERSION=2.7.8 NUMPY=1.7.1
+    - VERSION=3.3.5 NUMPY=1.7.1
+    - VERSION=3.4.1 NUMPY=1.7.1
+    - VERSION=3.5.0 NUMPY=1.9.3
     
-matrix:
-  fast_finish: true
-
 install:
   - cd terryfy && git fetch && git checkout master && cd ..
   - source terryfy/travis_tools.sh
@@ -28,6 +25,7 @@ install:
       cd .. ;
     fi
   - cd lensfunpy
+  - travis_retry pip install numpy==$NUMPY
   - travis_retry pip install -r dev-requirements.txt
   - travis_retry brew update
   - travis_retry brew install --universal glib
