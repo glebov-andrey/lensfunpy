@@ -64,9 +64,10 @@ script:
   - nosetests --verbosity=3 --nocapture ../lensfunpy/test
   - cd ..
 
-after_success:
-  - cd lensfunpy
-  - "if [[ \"`git log -n 1 --pretty=format:'%d'`\" =~ \"tag: v\" ]]; then
-       travis_retry pip install twine ;
-       twine upload -u letmaik -p $PYPI_PASS dist/* ;
-     fi"
+deploy:
+  provider: pypi
+  user: letmaik
+  password:
+    secure: GW2vr0X3tka3QQT4MiqPIt1aJ++HxI7bwbpSBj5zURvjGQQ/IKWJp1HBVkdFD+skpnctZyLxh97SprGZXLGtcbXLTDi7u+bkzW30Mv2FR4zHFb5dWCdf5mutinZG5dCmWmxvMx0GhNGpVsxo4Y/LDt+r0tPyT6DtmDs/9B01dLs=
+  on:
+    tags: true
