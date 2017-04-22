@@ -39,20 +39,19 @@ install:
   - travis_retry pip install numpy==$NUMPY_VERSION.*
   - travis_retry pip install -r dev-requirements.txt
   - travis_retry brew update
-  - travis_retry brew install --universal glib
+  - travis_retry brew install glib
   - brew link --force gettext
   - export CC=clang
   - export CXX=clang++
-  - export CFLAGS="-arch i386 -arch x86_64"
+  - export CFLAGS="-arch x86_64"
   - export CXXFLAGS=$CFLAGS
   - export LDFLAGS=$CFLAGS
   - export ARCHFLAGS=$CFLAGS
   - python setup.py bdist_wheel
   - travis_retry pip install delocate
   - delocate-listdeps --all dist/*.whl # lists library dependencies
-  - delocate-wheel --require-archs=intel dist/*.whl # copies library dependencies into wheel
+  - delocate-wheel --require-archs=x86_64 dist/*.whl # copies library dependencies into wheel
   - delocate-listdeps --all dist/*.whl # verify
-  - rename_wheels dist
   - pip install dist/*.whl
   - cd ..
 
