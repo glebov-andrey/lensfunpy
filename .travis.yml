@@ -68,6 +68,7 @@ deploy:
   provider: pypi
   user: letmaik
   skip_upload_docs: true
+  skip_cleanup: true
   password:
     secure: GW2vr0X3tka3QQT4MiqPIt1aJ++HxI7bwbpSBj5zURvjGQQ/IKWJp1HBVkdFD+skpnctZyLxh97SprGZXLGtcbXLTDi7u+bkzW30Mv2FR4zHFb5dWCdf5mutinZG5dCmWmxvMx0GhNGpVsxo4Y/LDt+r0tPyT6DtmDs/9B01dLs=
   on:
