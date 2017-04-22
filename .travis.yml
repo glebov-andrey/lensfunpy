@@ -1,10 +1,8 @@
 language: objective-c
 
 env:
-  global:
+  #global:
     #- LATEST_TAG=1
-    # PYPI_PASS for deployment
-    - secure: "T1YdcumN8SrCgxOT6XWJ4uDcul4uNszdhZiKkEoslAge5nODTfvhqYs1bMHtFuplBYkhYLS3ZQ3wx+m0C41qp5fG+b8eV2dT+uC26kG2Z4euKztzcJLhEdFXVQAODvHEPlcnESjqG+795iBzOFkL6bWi2XA7EGdNs8XkHvK208Q="
   matrix:
     - VERSION=2.7.8 NUMPY=1.7.1
     - VERSION=3.3.5 NUMPY=1.7.1
@@ -58,5 +56,5 @@ after_success:
   - cd lensfunpy
   - "if [[ \"`git log -n 1 --pretty=format:'%d'`\" =~ \"tag: v\" ]]; then
        travis_retry pip install twine ;
-       twine upload -u neothemachine -p $PYPI_PASS dist/* ;
+       twine upload -u letmaik -p $PYPI_PASS dist/* ;
      fi"
