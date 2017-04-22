@@ -9,16 +9,16 @@ env:
     #- LATEST_TAG=1
   matrix:
     - PYTHON_VERSION=2.7
-      NUMPY_VERSION=1.7
+      NUMPY_VERSION=1.7.1 # 1.7.2 has no macOS wheels
             
     - PYTHON_VERSION=3.4
-      NUMPY_VERSION=1.8
+      NUMPY_VERSION=1.8.*
       
     - PYTHON_VERSION=3.5
-      NUMPY_VERSION=1.9
+      NUMPY_VERSION=1.9.*
 
     - PYTHON_VERSION=3.6
-      NUMPY_VERSION=1.9
+      NUMPY_VERSION=1.11.*
     
 install:
   - cd terryfy && git fetch && git checkout master && cd ..
@@ -36,7 +36,7 @@ install:
   - cd lensfunpy
   # necessary, otherwise the lensfun submodule points to an old commit
   - git submodule update --recursive --init
-  - travis_retry pip install numpy==$NUMPY_VERSION.*
+  - travis_retry pip install numpy==$NUMPY_VERSION
   - travis_retry pip install -r dev-requirements.txt
   - travis_retry brew update
   - travis_retry brew install glib
