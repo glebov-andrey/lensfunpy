@@ -1,18 +1,29 @@
-language: objective-c
+os: osx
+language: generic
+
+# use oldest available image to be as compatible as possible when producing wheels
+osx_image: xcode6.4 # = OS X 10.10 
 
 env:
   #global:
     #- LATEST_TAG=1
   matrix:
-    - VERSION=2.7.8 NUMPY=1.7.1
-    - VERSION=3.3.5 NUMPY=1.7.1
-    - VERSION=3.4.1 NUMPY=1.7.1
-    - VERSION=3.5.0 NUMPY=1.9.3
+    - PYTHON_VERSION=2.7
+      NUMPY_VERSION=1.7
+            
+    - PYTHON_VERSION=3.4
+      NUMPY_VERSION=1.8
+      
+    - PYTHON_VERSION=3.5
+      NUMPY_VERSION=1.9
+
+    - PYTHON_VERSION=3.6
+      NUMPY_VERSION=1.9
     
 install:
   - cd terryfy && git fetch && git checkout master && cd ..
   - source terryfy/travis_tools.sh
-  - travis_retry get_python_environment macpython $VERSION venv
+  - travis_retry get_python_environment macports $PYTHON_VERSION venv
   - if [ -n "$LATEST_TAG" ]; then 
       checkout_closest_tag lensfunpy ;
     else
@@ -23,7 +34,9 @@ install:
       cd .. ;
     fi
   - cd lensfunpy
-  - travis_retry pip install numpy==$NUMPY
+  # necessary, otherwise the lensfun submodule points to an old commit
+  - git submodule update --recursive --init
+  - travis_retry pip install numpy==$NUMPY_VERSION.*
   - travis_retry pip install -r dev-requirements.txt
   - travis_retry brew update
   - travis_retry brew install --universal glib
